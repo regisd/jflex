@@ -1,0 +1,2 @@
+build:gcp --google_default_credentials
+build:gcp --remote_http_cache=https://storage.googleapis.com/jflex_bazel_remote_cache
