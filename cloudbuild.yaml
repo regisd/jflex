@@ -1,9 +1,11 @@
 # Configuration file for https://console.cloud.google.com/cloud-build
-
+# https://console.cloud.google.com/home/dashboard?project=jflex-ci
 steps:
 - id: "build_all"
   name: 'gcr.io/cloud-marketplace-containers/google/bazel:3.5.0'
   entrypoint: 'bazel'
   args: ['build', '--remote_http_cache=https://storage.googleapis.com/jflex_bazel_remote_cache', '//...']
 - id: "test_all"
+  name: 'gcr.io/cloud-marketplace-containers/google/bazel:3.5.0'
+  entrypoint: 'bazel'
   args: ['test', '--remote_http_cache=https://storage.googleapis.com/jflex_bazel_remote_cache', '//...']
