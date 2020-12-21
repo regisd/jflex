@@ -1,3 +1,5 @@
+load("@rules_jvm_external//:defs.bzl", "java_export")
+
 package(default_visibility = ["//jflex:visibility"])
 
 package_group(
@@ -27,6 +29,16 @@ alias(
 filegroup(
     name = "resources",
     srcs = glob(["src/main/resources/**"]),
+)
+
+java_export(
+    name = "mvn_jflex",
+    maven_coordinates = "de.jflex:jflex:1.9.0-SNAPSOT",
+    #    pom_template = "pom.tmpl",  # You can omit this
+    runtime_deps = [
+        "//jflex/src/main/java/jflex:jflex_ui",
+        "//third_party/java_cup:runtime",
+    ],
 )
 
 # Test helpers
