@@ -34,7 +34,7 @@ filegroup(
 java_export(
     name = "mvn_jflex",
     maven_coordinates = "de.jflex:jflex:1.9.0-SNAPSOT",
-    #    pom_template = "pom.tmpl",  # You can omit this
+    pom_template = "pom.tmpl.xml",
     runtime_deps = [
         "//jflex/src/main/java/jflex:jflex_ui",
         "//third_party/java_cup:runtime",
