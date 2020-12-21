@@ -20,3 +20,13 @@ information and for how to get started.
     ├── examples         example scanners and parsers
     ├── lib              syntax highlighting files ; also JFlex jar in binary distribution
     └── src              JFlex sources
+
+## Deploy to Maven repository
+
+This artifact is built with Bazel and can be deployed to a Maven repository using
+
+```sh
+bazel run jflex:mvn_jflex.publish --define maven_repo=file:///var/tmp/mvnrepo
+```
+
+See [rules_jvm_external `java_export`](https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/api.md#java_export)
