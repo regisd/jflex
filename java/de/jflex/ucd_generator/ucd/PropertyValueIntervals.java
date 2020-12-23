@@ -28,7 +28,7 @@ public class PropertyValueIntervals {
 
   protected final PropertyValues propertyValues = new PropertyValues();
 
-  Set<String> usedBinaryProperties = new HashSet<>();
+  final Set<String> usedBinaryProperties = new HashSet<>();
 
   private final Multimap<String, String> usedEnumProperties = HashMultimap.create();
 
@@ -44,15 +44,14 @@ public class PropertyValueIntervals {
    * @param startCodePoint The first code point in the interval.
    * @param endCodePoint The last code point in the interval.
    */
-  boolean addBinaryPropertyInterval(String propName, int startCodePoint, int endCodePoint) {
+  void addBinaryPropertyInterval(String propName, int startCodePoint, int endCodePoint) {
     boolean added = addPropertyInterval(propName, startCodePoint, endCodePoint);
     if (added) {
       usedBinaryProperties.add(propName);
     }
-    return added;
   }
 
-  boolean addEnumPropertyInterval(
+  void addEnumPropertyInterval(
       String propName, String propValue, int startCodePoint, int endCodePoint) {
     propValue = propertyValues.getCanonicalValueName(propName, propValue);
     String canonicalValue = PropertyNameNormalizer.canonicalValue(propName, propValue);
@@ -60,7 +59,6 @@ public class PropertyValueIntervals {
     if (added) {
       usedEnumProperties.put(propName, propValue);
     }
-    return added;
   }
 
   private boolean addPropertyInterval(String propName, int startCodePoint, int endCodePoint) {
