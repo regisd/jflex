@@ -13,6 +13,7 @@ import de.jflex.ucd_generator.ucd.CodepointRangeSet;
 import de.jflex.ucd_generator.ucd.UcdVersion;
 import de.jflex.ucd_generator.ucd.UnicodeData;
 import de.jflex.ucd_generator.util.JavaStrings;
+import de.jflex.util.collect.IntSet;
 import de.jflex.util.javac.JavaPackageUtils;
 import de.jflex.velocity.Velocity;
 import java.io.BufferedWriter;
@@ -24,7 +25,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.SortedSet;
 import org.apache.velocity.runtime.parser.ParseException;
 
 /** Emitter for a {@code Unicode_x_y.java}. */
@@ -106,11 +106,10 @@ public class UnicodeVersionEmitter extends UcdEmitter {
     return Maps.transformEntries(intervals, function).values();
   }
 
-  private static String partitionToCodesource(
-      SortedSet<Integer> partition, int caselessMatchPartitionSize) {
+  private static String partitionToCodesource(IntSet partition, int caselessMatchPartitionSize) {
     StringBuilder sb = new StringBuilder();
     Iterator<String> escapedChars =
-        partition.stream().map(JavaStrings::escapedUTF16Char).iterator();
+        partition.stream().mapToObj(JavaStrings::escapedUTF16Char).iterator();
     while (escapedChars.hasNext()) {
       sb.append(escapedChars.next());
     }

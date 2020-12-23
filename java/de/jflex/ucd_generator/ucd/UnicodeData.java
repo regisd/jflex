@@ -9,13 +9,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSortedMap;
 import de.jflex.ucd_generator.util.PropertyNameNormalizer;
+import de.jflex.util.collect.IntSet;
 import de.jflex.version.Version;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.SortedSet;
 
 public class UnicodeData {
 
@@ -199,7 +199,7 @@ public class UnicodeData {
     return caselessMatches.maxCaselessMatchPartitionSize();
   }
 
-  public ImmutableCollection<SortedSet<Integer>> uniqueCaselessMatchPartitions() {
+  public ImmutableCollection<IntSet> uniqueCaselessMatchPartitions() {
     return caselessMatches.uniqueCaselessMatchPartitions();
   }
 

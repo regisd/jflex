@@ -1,10 +1,12 @@
 package de.jflex.ucd_generator.ucd;
 
 import static de.jflex.ucd_generator.util.HexaUtils.intFromHexa;
+import static java.lang.Math.max;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
+import de.jflex.util.collect.IntSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,36 +14,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class CaselessMatches {
   /**
    * A set of code point space partitions, each containing at least two caselessly equivalent code
    * points.
    */
-  public final Map<Integer, SortedSet<Integer>> caselessMatchPartitions = new HashMap<>();
+  public final Map<Integer, IntSet> caselessMatchPartitions = new HashMap<>();
 
   public int maxCaselessMatchPartitionSize() {
-    return caselessMatchPartitions.values().stream()
-        .map(Set::size)
-        .max(Integer::compareTo)
-        .orElse(0);
+    int maxSize = 0;
+    for (IntSet partition : caselessMatchPartitions.values()) {
+      maxSize = max(maxSize, partition.size());
+    }
+    return maxSize;
   }
 
   /**
    * Returns the {@link #caselessMatchPartitions} where the key is the first element from the
    * partition.
    */
-  public ImmutableCollection<SortedSet<Integer>> uniqueCaselessMatchPartitions() {
-    ArrayList<SortedSet<Integer>> partitions = new ArrayList<>();
-    for (Map.Entry<Integer, SortedSet<Integer>> entry : caselessMatchPartitions.entrySet()) {
-      if (entry.getKey().equals(entry.getValue().first())) {
-        partitions.add(entry.getValue());
+  public ImmutableCollection<IntSet> uniqueCaselessMatchPartitions() {
+    ArrayList<IntSet> partitions = new ArrayList<>();
+    for (Map.Entry<Integer, IntSet> entry : caselessMatchPartitions.entrySet()) {
+      IntSet intset = entry.getValue();
+      if (entry.getKey() == intset.smallestValue()) {
+        intset.sort();
+        partitions.add(intset);
       }
     }
-    Comparator<SortedSet<Integer>> comparator = Comparator.comparingInt(SortedSet::first);
+    Comparator<IntSet> comparator = Comparator.comparingInt(IntSet::smallestValue);
     return ImmutableList.sortedCopyOf(comparator, partitions);
   }
 
@@ -71,16 +73,16 @@ public class CaselessMatches {
             intFromHexa(uppercaseMapping),
             intFromHexa(lowercaseMapping),
             intFromHexa(titlecaseMapping));
-    SortedSet<Integer> partition =
+    IntSet partition =
         codepoints.stream()
             .filter(Objects::nonNull)
             .map(caselessMatchPartitions::get)
             .filter(Objects::nonNull)
             .findFirst()
-            .orElse(new TreeSet<>());
+            .orElse(new IntSet());
     for (Integer cp : codepoints) {
       if (cp != null) {
-        partition.add(cp);
+        partition.put(cp);
         caselessMatchPartitions.put(cp, partition);
       }
     }
