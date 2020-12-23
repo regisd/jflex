@@ -26,7 +26,7 @@ public class PropertyValueIntervals {
 
   private static final boolean DEBUG = true;
 
-  private final PropertyValues propertyValues;
+  protected final PropertyValues propertyValues = new PropertyValues();
 
   Set<String> usedBinaryProperties = new HashSet<>();
 
@@ -35,10 +35,6 @@ public class PropertyValueIntervals {
   // We need to keep the order of the added CodepointRanges
   private final SortedSetMultimap<String, CodepointRange> propertyValueIntervals =
       TreeMultimap.create(Ordering.natural(), CodepointRange.COMPARATOR);
-
-  public PropertyValueIntervals(PropertyValues propertyValues) {
-    this.propertyValues = propertyValues;
-  }
 
   /**
    * Given a binary property name, and starting and ending code points, adds the interval to the

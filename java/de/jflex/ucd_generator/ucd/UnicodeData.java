@@ -21,11 +21,8 @@ public class UnicodeData {
 
   private final PropertyNameNormalizer propertyNameNormalizer = new PropertyNameNormalizer();
 
-  private final PropertyValues propertyValues = new PropertyValues();
-
   /** Maps Unicode property values to the associated set of code point ranges. */
-  private final PropertyValueIntervals propertyValueIntervals =
-      new PropertyValueIntervals(propertyValues);
+  private final PropertyValueIntervals propertyValueIntervals = new PropertyValueIntervals();
 
   private final CaselessMatches caselessMatches = new CaselessMatches();
 
@@ -61,16 +58,16 @@ public class UnicodeData {
 
   public void addPropertyValueAliases(
       String normalizedPropertyName, String normalizedPropertyValue, Set<String> aliases) {
-    propertyValues.addPropertyValueAliases(
+    propertyValueIntervals.propertyValues.addPropertyValueAliases(
         normalizedPropertyName, normalizedPropertyValue, aliases);
   }
 
   public Collection<String> getPropertyValueAliases(String propName, String propValue) {
-    return propertyValues.getPropertyValueAliases(propName, propValue);
+    return propertyValueIntervals.propertyValues.getPropertyValueAliases(propName, propValue);
   }
 
   public void copyPropertyValueAliases(String sourceProperty, String destProperty) {
-    propertyValues.copyPropertyValueAliases(sourceProperty, destProperty);
+    propertyValueIntervals.propertyValues.copyPropertyValueAliases(sourceProperty, destProperty);
     propertyNameNormalizer.putPropertyAlias(destProperty, destProperty);
   }
 
@@ -183,7 +180,7 @@ public class UnicodeData {
   }
 
   public String getCanonicalPropertyValueName(String propName, String propValue) {
-    return propertyValues.getCanonicalValueName(propName, propValue);
+    return propertyValueIntervals.propertyValues.getCanonicalValueName(propName, propValue);
   }
 
   public int maxCaselessMatchPartitionSize() {
