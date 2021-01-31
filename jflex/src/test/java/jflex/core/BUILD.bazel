@@ -7,3 +7,11 @@ java_test(
         "//third_party/com/google/truth",
     ],
 )
+
+java_test(
+    name = "RegExpsTest",
+    srcs = ["RegExpsTest.java"],
+    deps = [
+        "//jflex/src/main/java/jflex/core",
+    ],
+)
