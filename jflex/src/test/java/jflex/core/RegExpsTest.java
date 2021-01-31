@@ -26,14 +26,29 @@
 
 package jflex.core;
 
+import static jflex.core.sym.PRIMCLASS;
+import static jflex.core.sym.STAR;
+
+import jflex.chars.Interval;
+import jflex.core.unicode.IntCharSet;
 import org.junit.Test;
 
-/** Test for {@link RegExps}.
- */
-}
+/** Test for {@link RegExps}. */
 public class RegExpsTest {
 
   @Test
   public void normalise() {
+    RegExps regExps = new RegExps();
+    Macros macros = new Macros();
+    RegExp1 r = new RegExp1(PRIMCLASS,
+        // content: { [' ']['"']['('-')']['']['^']['|'] }
+        IntCharSet.of(
+            Interval.ofCharacter(' '),
+            Interval.ofCharacter('\"'),
+            Interval.ofCharacterRange('(', ')'),
+            Interval.ofCharacter('^'),
+            Interval.ofCharacter('|')));
+    macros.insert("a", new RegExp1(STAR, r));
+    regExps.normalise(macros);
   }
 }

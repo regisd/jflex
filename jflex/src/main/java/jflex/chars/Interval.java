@@ -122,6 +122,11 @@ public final class Interval implements Iterable<Integer> {
     return new Interval(c, c);
   }
 
+  /** Creates an interval. */
+  public static Interval ofCharacterRange(char start, char end) {
+    return new Interval(start, end);
+  }
+
   /**
    * Creates a copy of the interval.
    *
